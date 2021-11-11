@@ -1,7 +1,5 @@
 pub mod types {
-	use std::array;
-
-	const KEYWORDS_LIST: [&str; 91] = [
+	pub const KEYWORDS_LIST: [&str; 91] = [
 		"await",
 		"break",
 		"case",
@@ -97,8 +95,8 @@ pub mod types {
 
 	const OPERATORS_LIST: [&str; 10] = ["||", "&&", ";", ">", "=", "==", "===", "<", "<=", ">="];
 
-	#[derive(Debug)]
-	enum TokenTypes {
+	#[derive(Debug, Clone, Copy)]
+	pub enum TokenTypes {
 		Name,
 		Keyword,
 		Symbol,
@@ -106,8 +104,8 @@ pub mod types {
 	}
 	#[derive(Debug)]
 	pub struct Token {
-		value: String,
-		token_type: TokenTypes,
+		pub value: String,
+		pub token_type: TokenTypes,
 	}
 	impl Token {
 		pub fn new(word: &str) -> Self {
@@ -126,16 +124,24 @@ pub mod types {
 }
 
 pub mod funcs {
+
 	use super::types::*;
+
+	pub fn replace_special(code: &mut String) -> String {
+		let mut parsed_string = String::new();
+		parsed_string = code.replace(";", " ");
+		parsed_string = parsed_string.replace("\"", " \" ");
+		parsed_string
+	}
 
 	pub fn split_by_lines(code: &String) -> Vec<&str> {
 		let parsed_string: Vec<&str> = code.lines().collect();
 		parsed_string
 	}
 
-	pub fn split_by_white_space(code: Vec<&str>) -> Vec<&str> {
+	pub fn split_by_white_space(code_lines: Vec<&str>) -> Vec<&str> {
 		let mut parsed_string: Vec<&str> = Vec::new();
-		for line in code {
+		for line in code_lines {
 			let mut splited: Vec<&str> = line.split_whitespace().collect();
 			parsed_string.append(&mut splited);
 		}
